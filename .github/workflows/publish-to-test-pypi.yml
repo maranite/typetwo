@@ -1,6 +1,8 @@
+name: Publish Python distributions to PyPI 
+on: push
 jobs:
   build-n-publish:
-    name: Build and publish Python 🐍 distributions type_two to PyPI
+    name: Build and publish Python distributions type_two to PyPI
     runs-on: ubuntu-18.04
   steps:
     - uses: actions/checkout@master
