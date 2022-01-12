@@ -1,0 +1,28 @@
+Metadata-Version: 2.1
+Name: typetwo
+Version: 1.0.0
+Summary: Helpers for maintaining type-II Slowly Changing Dimensions
+Home-page: https://github.com/maranite/typetwo
+Author: Mark White
+Author-email: maranite@gmail.com
+License: UNKNOWN
+Project-URL: Bug Tracker, https://github.com/maranite/typetwo/issues
+Project-URL: About Mark, https://www.linkedin.com/in/maranite/
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
+# Type 2
+
+Provides a simple set of utility functions for dealing with change management for datasets based on lists of dictionaries.
+
+## Example Usage: deep_get
+
+ ```python
+
+```
+

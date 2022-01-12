@@ -1,0 +1,18 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Prepare virtualenv", 
+            "type": "shell",
+            "runOptions": {
+                "runOn": "folderOpen"
+            },
+            "windows": {
+                "command": "${workspaceFolder}\\.vscode\\run_on_open.bat"
+            }
+        }
+
+    ]
+}

@@ -1,0 +1,4 @@
+.pypirc
+.virtualenv
+/dist
+__pycache__

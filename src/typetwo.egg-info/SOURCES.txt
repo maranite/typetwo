@@ -1,0 +1,11 @@
+LICENSE
+README.md
+pyproject.toml
+setup.cfg
+src/typetwo/__init__.py
+src/typetwo/fieldpath.py
+src/typetwo/nestees.py
+src/typetwo.egg-info/PKG-INFO
+src/typetwo.egg-info/SOURCES.txt
+src/typetwo.egg-info/dependency_links.txt
+src/typetwo.egg-info/top_level.txt
