@@ -76,8 +76,8 @@ class TypeTwo():
         self.document = row_key.group_rows(existing_rows)
         
         for rows in self.document.values():
-            if len(rows) > 1:
-                rows.sort(key = lambda r : r[from_field], reversed = True)
+            if len(rows) > 1:                
+                rows.sort(key = lambda r : r[from_field], reverse = True)
                 for i, row in enumerate(rows):
                     if i > 0:
                         row[curr_field] = False
@@ -109,16 +109,16 @@ class TypeTwo():
             existing[self.to_field] = row[self.from_field]
             existing[self.current_key] = False
         else:
-            row.setdefault(self.from_field, self.default_from_date)
+            row.setdefault(self.from_field, self.from_date)
 
-        row.setdefault(self.to_field, self.default_to_date)
+        row.setdefault(self.to_field, self.to_date)
         row.setdefault(self.current_key, True)        
         section.insert(0, row)
         self.has_changes = True
         return True
 
 
-    def process_rows(self, current_rows : list, time_now = datetime.now()):
+    def process_rows(self, current_rows : list):
         """
         Args:
             rows: list   The now-current rows from a system of record.
@@ -128,6 +128,21 @@ class TypeTwo():
         """
         for row in current_rows:
             self.process_row(row)
+
+        return iter(self)
+
+
+    def __add__(self, other):
+        """Add either a new row, or a list of new rows to the existing data"""
+        if isinstance(other, list):
+            return self.process_rows(other)
+        elif isinstance(other, dict):
+            return self.process_row(other)
+        return NotImplemented
+
+    def __iter__(self):
+        """Iterates over the SCD-II processed rows"""        
+        time_now = datetime.now()
 
         for key, section in self.document.items():
             for i, row in enumerate(section):
@@ -143,18 +158,4 @@ class TypeTwo():
                     if row[self.to_field] is None or row[self.to_field] > to_date:
                         row[self.to_field] = to_date
                         self.has_changes = True
-        return iter(self)
-
-
-    def __add__(self, other):
-        """Add either a new row, or a list of new rows to the existing data"""
-        if isinstance(other, list):
-            return self.process_rows(other)
-        elif isinstance(other, dict):
-            return self.process_row(other)
-        return NotImplemented
-
-
-    def __iter__(self):
-        """Iterates over the SCD-II processed rows"""
-        return [row for section in self.document.values() for row in section]
+                yield row

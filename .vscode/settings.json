@@ -1,4 +1,22 @@
 {
+    "files.exclude": {
+        "**/dist": true,
+        "**/.eggs": true,
+        "**/.virtualenv": true,
+        "**/typetwo.egg-info": true,
+        "**/.DS_Store": true,
+        "**/Thumbs.db": true,
+        ".git/hooks": false,
+        ".git/*HEAD": true,
+        ".git/index": true,
+        ".git/description": true,
+        ".git/COMMIT*": true,
+        ".git/config": true,
+        ".git/info": true,
+        ".git/logs": true,
+        ".git/objects": true,
+        ".git/refs": true
+    },
     "python.autoComplete.extraPaths": [
         "src/typetwo"
     ],
@@ -8,10 +26,9 @@
     "python.defaultInterpreterPath": "${workspaceFolder}\\.virtualenv\\",
     "python.formatting.provider": "black",
     "python.testing.unittestArgs": [
-        "-v",
-    
+        "-v",    
         "-s",
-        "${workspaceFolder}\\tests\\",
+        "${workspaceFolder}",
         "-p",
         "test*.py"
     ],
