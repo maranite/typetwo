@@ -42,7 +42,7 @@ class IsoJson(json.JSONEncoder):
         the list or data passed.
         '''
         if isinstance(data, Iterable):
-            return '\n'.join([cls.dumps(item) for item in data])
+            return '\n'.join((cls.dumps(item) for item in data))
 
         return cls.encode(data)
 
