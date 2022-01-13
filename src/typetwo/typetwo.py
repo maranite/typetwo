@@ -131,14 +131,15 @@ class TypeTwo():
 
         return iter(self)
 
-
     def __add__(self, other):
         """Add either a new row, or a list of new rows to the existing data"""
         if isinstance(other, list):
-            return self.process_rows(other)
+            self.process_rows(other)
         elif isinstance(other, dict):
-            return self.process_row(other)
-        return NotImplemented
+            self.process_row(other)
+        else:
+            return NotImplemented
+        return self            
 
     def __iter__(self):
         """Iterates over the SCD-II processed rows"""        

@@ -60,3 +60,12 @@ class TestAll(unittest.TestCase):
         items = [x for x in type_ii]
         actual = len(items) 
         self.assertEqual(expected, actual, "TypeTwo not processing change rows")
+
+    def test_type_two_3(self):
+        key = RowKey('a', 'b')
+        type_ii = TypeTwo(key, self.rows)
+        type_ii += self.change
+        expected = len(self.rows) * 2
+        items = [x for x in type_ii]
+        actual = len(items) 
+        self.assertEqual(expected, actual, "TypeTwo += not processing change rows")        
