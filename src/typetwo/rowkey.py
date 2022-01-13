@@ -3,7 +3,6 @@ from typing import Any, AnyStr, Callable, Dict, List, Tuple, Union
 
 from typetwo.dictcomparer import DictComparer
 
-
 class RowKey():
     """Encapsulates the fields used as the primary key for a record"""
 
