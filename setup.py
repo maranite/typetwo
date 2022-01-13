@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name="typetwo",
-    version="1.0.6",
+    version="1.0.7",
     author="Mark White",
     author_email="maranite@gmail.com",
     description="Helper for type-II Slowly Changing Dimensions, as well as ISO Json loading and dumping",
@@ -13,7 +13,7 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url="https://github.com/maranite/typetwo",
     project_urls={
-        "Bug Tracker": " https://github.com/maranite/typetwo/issues",
+        "Bug Tracker": "https://github.com/maranite/typetwo/issues",
         "About Mark" : "https://www.linkedin.com/in/maranite/"
     },
     classifiers=[
