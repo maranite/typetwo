@@ -3,7 +3,7 @@ from random import random
 import unittest
 from src.typetwo import *
 
-class TestAll(unittest.TestCase):
+class TestTypeTwo(unittest.TestCase):
 
     def setUp(self) -> None:
         super().setUp()

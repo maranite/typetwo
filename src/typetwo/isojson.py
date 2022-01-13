@@ -32,8 +32,8 @@ class IsoJson(json.JSONEncoder):
         Returns a JSON string representation of data, 
         with conversion of date, time and datetime to 
         ISO format strings.
-        '''
-        return cls.encode(data)
+        '''        
+        return cls().encode(data)
 
     @classmethod
     def dump_jsonl(cls, data):
@@ -41,10 +41,11 @@ class IsoJson(json.JSONEncoder):
         Returns a JSON-lines format representation of
         the list or data passed.
         '''
-        if isinstance(data, Iterable):
-            return '\n'.join((cls.dumps(item) for item in data))
+        instance = cls()
 
-        return cls.encode(data)
+        if isinstance(data, Iterable):
+            return '\n'.join((instance.dumps(item) for item in data))
+        return instance.encode(data)
 
 
     """
