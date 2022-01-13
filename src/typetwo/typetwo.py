@@ -74,7 +74,8 @@ class TypeTwo():
             row.setdefault(curr_field, True)
   
         self.document = row_key.group_rows(existing_rows)
-        for key, rows in self.document:
+        
+        for rows in self.document.values():
             if len(rows) > 1:
                 rows.sort(key = lambda r : r[from_field], reversed = True)
                 for i, row in enumerate(rows):

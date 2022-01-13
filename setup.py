@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name="typetwo",
-    version="1.0.8",
+    version="1.0.9",
     author="Mark White",
     author_email="maranite@gmail.com",
     description="Helper for type-II Slowly Changing Dimensions, as well as ISO Json loading and dumping",
