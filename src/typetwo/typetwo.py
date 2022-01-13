@@ -11,8 +11,8 @@ class TypeTwo():
     """
 
     def __init__(self, 
-        existing_rows : List[Dict[str, Any]],
-        row_key     : RowKey,
+        row_key     : Union[RowKey, str, List[str]],
+        existing_rows : List[Dict[str, Any]] = [],
         from_field  : str  = '__FROM__', 
         to_field    : str  = '__TO__', 
         curr_field  : str   = '__CURRENT__', 
@@ -50,6 +50,13 @@ class TypeTwo():
         time_now defines the timestamp used for switching validity
         of any newly added record.
         """
+        if isinstance(row_key, str):
+            row_key = RowKey(row_key)
+        elif isinstance(row_key, list):
+            row_key = RowKey(*row_key)
+        elif not isinstance(row_key, RowKey):
+            raise NotImplementedError()
+
         self.row_key = row_key
         self.from_field = from_field
         self.to_field = to_field
@@ -59,6 +66,7 @@ class TypeTwo():
         self.fn_can_retire = fn_can_retire 
         self.comparer = DictComparer(from_field, to_field, curr_field, *ignore_fields)
         self.visited_keys = set([])
+        self.has_changes = False
 
         for row in existing_rows:
             row.setdefault(from_field, from_date)
@@ -105,6 +113,7 @@ class TypeTwo():
         row.setdefault(self.to_field, self.default_to_date)
         row.setdefault(self.current_key, True)        
         section.insert(0, row)
+        self.has_changes = True
         return True
 
 
@@ -126,11 +135,13 @@ class TypeTwo():
                         if self.fn_can_retire(row):
                             row[self.current_key] = False
                             row[self.to_field] = time_now
+                            self.has_changes = True
                 else:
                     row[self.current_key] = False
                     to_date = section[i-1][self.from_field] 
                     if row[self.to_field] is None or row[self.to_field] > to_date:
                         row[self.to_field] = to_date
+                        self.has_changes = True
         return iter(self)
 
 
