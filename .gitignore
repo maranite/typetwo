@@ -2,3 +2,4 @@
 .virtualenv
 /dist
 __pycache__
+typetwo.egg-info
