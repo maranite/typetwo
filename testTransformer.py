@@ -16,3 +16,16 @@ class TestTransformer(unittest.TestCase):
         self.assertEqual(time(12, 0, 0), auto_parse("12:00:00"))
         self.assertEqual(datetime(2015, 5, 14, 12, 0, 0), auto_parse("2015-05-14T12:00:00"))
 
+    def test_dates_inplace(self):
+        auto_parse = Transformer().enable_iso_dates()
+        data = {'a' : {'dt': "2015-05-14"}}
+        auto_parse(data)
+        self.assertEqual(date(2015, 5, 14), data['a']['dt'])
+        
+    def test_dates_no_inplace(self):
+        auto_parse = Transformer().enable_iso_dates()
+        data = {'a' : {'dt': "2015-05-14"}}
+        data2 = auto_parse(data, in_place=False)
+        self.assertEqual(date(2015, 5, 14), data2['a']['dt'])
+        self.assertEqual("2015-05-14", data['a']['dt'])
+
