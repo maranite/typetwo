@@ -35,18 +35,26 @@ class Transformer():
 
     def enable_dates(self, *formats):
         """Adds date format strings to recognize (see strptime)"""
-        self.transforms += [lambda d: datetime.strptime(d, fmt).date() for fmt in formats]
+        def make_formatter(format):
+            return lambda d: datetime.strptime(d, format).date()
+        self.transforms += [make_formatter(f) for f in formats]
         return self
     
     def enable_times(self, *formats):
         """Adds time format strings to recognize (see strptime)"""
-        self.transforms += [lambda d: datetime.strptime(d, fmt).time() for fmt in formats]
+        def make_formatter(format):
+            return lambda d: datetime.strptime(d, format).time()
+        self.transforms += [make_formatter(f) for f in formats]
         return self
+
     
     def enable_datetimes(self, *formats):
         """Adds datetime format strings to recognize (see strptime)"""
-        self.transforms += [lambda d: datetime.strptime(d, fmt) for fmt in formats]
+        def make_formatter(format):
+            return lambda d: datetime.strptime(d, format)
+        self.transforms += [make_formatter(f) for f in formats]
         return self
+
     
     def enable_iso_dates(self):
         """Adds support for parsing ISO date, time and datetime strings"""
