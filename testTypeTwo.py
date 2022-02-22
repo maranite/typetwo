@@ -69,3 +69,9 @@ class TestTypeTwo(unittest.TestCase):
         items = [x for x in type_ii]
         actual = len(items) 
         self.assertEqual(expected, actual, "TypeTwo += not processing change rows")        
+
+    def test_type_nokey(self):
+        key = NoKey()
+        actual = key.group_rows([{'test': 123}])
+        expected = {'ungrouped': [{'test': 123}]}
+        self.assertEqual(expected, actual, "NoKey not grouping correctly")        
