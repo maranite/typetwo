@@ -1,6 +1,5 @@
 from datetime import date, datetime
 from typing import Any, AnyStr, Callable, Dict, List, Tuple, Union
-
 from .dictcomparer import DictComparer
 
 class RowKey():
@@ -29,3 +28,17 @@ class RowKey():
     def __iter__(self):
         """Iterates the key names"""
         return iter(self.keys)
+
+
+class NoKey(RowKey):
+    """Special case RowKey which groups all rows under a common key, namely 'ungrouped'"""
+    def __init__(self):
+        """Encapsulates the fields used as the primary key for a record."""
+        self.keys = []
+
+    def __call__(self, row : dict):
+        """
+        Returns a tuple of values from ``row`` which correspond to the given keys
+        """
+        if isinstance(row, dict):
+            return "ungrouped"
