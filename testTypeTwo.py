@@ -1,4 +1,5 @@
 from ast import Assert
+# from curses import non
 from random import random
 import unittest
 from src.typetwo import *
@@ -75,3 +76,16 @@ class TestTypeTwo(unittest.TestCase):
         actual = key.group_rows([{'test': 123}])
         expected = {'ungrouped': [{'test': 123}]}
         self.assertEqual(expected, actual, "NoKey not grouping correctly")        
+
+    def test_type_funkey(self):
+        called = False
+        def tfun(row):
+            nonlocal called
+            called = True
+            return row['test']
+        
+        key = FunKey(tfun)
+        actual = key.group_rows([{'test': '123'}])
+        expected = {'123': [{'test': '123'}]}
+        self.assertEqual(expected, actual, "NoKey not grouping correctly")        
+        self.assertTrue(called)
