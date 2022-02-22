@@ -1,4 +1,5 @@
 from datetime import date, datetime
+import types
 from typing import Any, AnyStr, Callable, Dict, List, Tuple, Union
 from .dictcomparer import DictComparer
 
@@ -8,7 +9,12 @@ class RowKey():
     def __init__(self, *keys):
         """Encapsulates the fields used as the primary key for a record.
         ``keys``:  One of more key names (strings)"""
-        self.keys = keys
+        # even though we have the FunKey class, accomodate a function being passed here
+        if len(keys) == 1 and isinstance(keys[0], types.FunctionType):    
+            self.__call__ = keys[0]
+            self.keys = []
+        else: 
+            self.keys = keys
     
     def __call__(self, row : dict):
         """
@@ -28,6 +34,18 @@ class RowKey():
     def __iter__(self):
         """Iterates the key names"""
         return iter(self.keys)
+
+
+
+class FunKey(RowKey):
+    """Special case RowKey wraps a function"""
+    def __init__(self, func_to_wrap):
+        """Encapsulates the fields used as the primary key for a record."""
+        self.__call__ = func_to_wrap
+    
+    def __iter__(self):
+        raise StopIteration()
+
 
 
 class NoKey(RowKey):

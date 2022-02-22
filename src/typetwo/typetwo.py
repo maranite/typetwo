@@ -3,7 +3,7 @@ import types
 from typing import Any, AnyStr, Callable, Dict, List, Tuple, Union
 
 from .dictcomparer import DictComparer
-from .rowkey import RowKey
+from .rowkey import RowKey, FunKey, NoKey
 
 
 class TypeTwo():
@@ -56,9 +56,9 @@ class TypeTwo():
         elif isinstance(row_key, list):
             row_key = RowKey(*row_key)
         elif row_key is None:
-            row_key = lambda r: "ungrouped"
+            row_key = NoKey()
         elif isinstance(row_key, types.FunctionType):
-            pass
+            row_key = FunKey(row_key)
         elif not isinstance(row_key, RowKey):
             raise NotImplementedError()
 
