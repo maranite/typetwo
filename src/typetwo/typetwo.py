@@ -1,4 +1,5 @@
 from datetime import date, datetime
+import types
 from typing import Any, AnyStr, Callable, Dict, List, Tuple, Union
 
 from .dictcomparer import DictComparer
@@ -54,6 +55,10 @@ class TypeTwo():
             row_key = RowKey(row_key)
         elif isinstance(row_key, list):
             row_key = RowKey(*row_key)
+        elif row_key is None:
+            row_key = lambda r: "ungrouped"
+        elif isinstance(row_key, types.FunctionType):
+            pass
         elif not isinstance(row_key, RowKey):
             raise NotImplementedError()
 
