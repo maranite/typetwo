@@ -59,10 +59,11 @@ class TypeTwo():
             row_key = NoKey()
         elif isinstance(row_key, types.FunctionType):
             row_key = FunKey(row_key)
-        elif not isinstance(row_key, RowKey):
+        elif isinstance(row_key, RowKey):
+            self.row_key = row_key
+        else:
             raise NotImplementedError()
 
-        self.row_key = row_key
         self.from_field = from_field
         self.to_field = to_field
         self.current_key = curr_field
