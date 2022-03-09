@@ -1,4 +1,4 @@
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 import types
 from typing import Any, AnyStr, Callable, Dict, List, Tuple, Union
 
@@ -20,7 +20,8 @@ class TypeTwo():
         from_date   : datetime = datetime.min,
         to_date     : datetime = datetime(2999,12,31), 
         fn_can_retire : Callable[[dict], bool] = lambda _ : True,
-        ignore_fields = []
+        ignore_fields = [],
+        tz_offset: int = 0
     ):
         """
         Initializes an object which maintains state of a 
@@ -73,6 +74,7 @@ class TypeTwo():
         self.comparer = DictComparer(from_field, to_field, curr_field, *ignore_fields)
         self.visited_keys = set([])
         self.has_changes = False
+        self.tz_offset = tz_offset
 
         for row in existing_rows:
             row.setdefault(from_field, from_date)
@@ -88,7 +90,7 @@ class TypeTwo():
                     if i > 0:
                         row[curr_field] = False
 
-    def process_row(self, row, time_now = datetime.now()):
+    def process_row(self, row, time_now = datetime.now()+timedelta(hours=tz_offset):
         """
         Args:
             row: dict   A now-current row from a system of record.
@@ -149,7 +151,7 @@ class TypeTwo():
 
     def __iter__(self):
         """Iterates over the SCD-II processed rows"""        
-        time_now = datetime.now()
+        time_now = datetime.now()+timedelta(hours=self.tz_offset)
 
         for key, section in self.document.items():
             for i, row in enumerate(section):
