@@ -1,10 +1,9 @@
 from datetime import date, datetime
+from pytz import utc
 import types
 from typing import Any, AnyStr, Callable, Dict, List, Tuple, Union
-
 from .dictcomparer import DictComparer
 from .rowkey import RowKey, FunKey, NoKey
-
 
 class TypeTwo():
     """
@@ -20,7 +19,8 @@ class TypeTwo():
         from_date   : datetime = datetime.min,
         to_date     : datetime = datetime(2999,12,31), 
         fn_can_retire : Callable[[dict], bool] = lambda _ : True,
-        ignore_fields = []
+        ignore_fields = [],
+        now         : datetime = datetime.now(utc)
     ):
         """
         Initializes an object which maintains state of a 
@@ -50,6 +50,9 @@ class TypeTwo():
         
         time_now defines the timestamp used for switching validity
         of any newly added record.
+
+        now defines the datetime for when newly retired records end, 
+        and their successor records start. 
         """
         if isinstance(row_key, str):
             row_key = RowKey(row_key)
@@ -73,6 +76,7 @@ class TypeTwo():
         self.comparer = DictComparer(from_field, to_field, curr_field, *ignore_fields)
         self.visited_keys = set([])
         self.has_changes = False
+        self.now_date = now
 
         for row in existing_rows:
             row.setdefault(from_field, from_date)
@@ -149,15 +153,13 @@ class TypeTwo():
 
     def __iter__(self):
         """Iterates over the SCD-II processed rows"""        
-        time_now = datetime.now()
-
         for key, section in self.document.items():
             for i, row in enumerate(section):
                 if i == 0:
                     if row[self.current_key] and (key not in self.visited_keys):
                         if self.fn_can_retire(row):
                             row[self.current_key] = False
-                            row[self.to_field] = time_now
+                            row[self.to_field] = self.now_date
                             self.has_changes = True
                 else:
                     row[self.current_key] = False
