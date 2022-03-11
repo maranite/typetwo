@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name="typetwo",
-    version="1.0.24",
+    version="1.0.25",
     author="Mark White",
     author_email="maranite@gmail.com",
     description="Helper for type-II Slowly Changing Dimensions, as well as ISO Json loading and dumping",
@@ -24,7 +24,7 @@ setuptools.setup(
     package_dir={"": "src"},
     packages=setuptools.find_packages(where="src"),
     python_requires=">=3.8",
-    install_requires=['pytz']
+    install_requires=['pytz'],
     test_suite='nose.collector',
     tests_require=['nose'], 
 )
