@@ -1,5 +1,6 @@
 from datetime import date, datetime, time
 from typing import Any, Callable
+from pytz import timezone, utc
 
 class Transformer():
     """
@@ -96,4 +97,22 @@ class Transformer():
         self.transforms += [time.fromisoformat, date.fromisoformat, datetime.fromisoformat]
         return self        
 
+    def enable_datetimes_tz(self, source_tz : timezone = utc, target_tz : timezone = utc, *formats):
+        """Adds support for parsing datetime with timezone correction.
+                                
+           source_tz: The assumed timezone of the source data being parsed.
+           target_tz: The timezone which parsed dates should be represented in.
+           formats: One or more strptime formats to parse. If no formats are provided, ISO format is inferred.
+        """
+        def make_formatter(format):            
+            return lambda d: source_tz.localize(datetime.strptime(d, format)).astimezone(target_tz)
+        
+        def convert(dt):
+            return source_tz.localize(datetime.fromisoformat(dt)).astimezone(target_tz)
+
+        if formats:
+            self.transforms += [make_formatter(f) for f in formats]  
+        else:
+            self.transforms += [convert]
+        return self
 

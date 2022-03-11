@@ -60,6 +60,9 @@ class IsoJson(json.JSONEncoder):
         .enable_dates("%Y-%m-%d","%d/%m/%Y","%d-%b-%Y","%d-%m-%Y")\
         .enable_iso_dates()
 
+    parse_with_timezone = Transformer(
+        lambda txt : time.fromisoformat(txt), date.fromisoformat, datetime.fromisoformat)
+
 
     @classmethod
     def loads(cls, json_text : str, hook = None) -> dict:

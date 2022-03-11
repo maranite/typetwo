@@ -7,17 +7,11 @@
 # documentation.
 
 name: Upload Python Package
-
 on: push
-# on:
-#   release:
-#     types: [published]
-
-jobs:
+jobs:  
   deploy:
-
     runs-on: ubuntu-latest
-
+    if: github.ref == 'refs/heads/master'
     steps:
     - uses: actions/checkout@v2
     - name: Set up Python

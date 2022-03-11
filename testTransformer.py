@@ -1,5 +1,6 @@
 import unittest
 from datetime import datetime, date, time
+from pytz import timezone, utc
 from src.typetwo import *
 
 class TestTransformer(unittest.TestCase):
@@ -29,3 +30,14 @@ class TestTransformer(unittest.TestCase):
         self.assertEqual(date(2015, 5, 14), data2['a']['dt'])
         self.assertEqual("2015-05-14", data['a']['dt'])
 
+    def test_enable_datetimes_tz(self):        
+        auto_parse = Transformer().enable_datetimes_tz(timezone("Etc/GMT+10"))
+        expected = datetime(2015, 5, 14, 12, 0, 0, tzinfo=utc)        
+        actual = auto_parse("2015-05-14T02:00:00")
+        self.assertEqual(expected, actual)
+
+    def test_enable_datetimes_tz_daylight_saving(self):        
+        auto_parse = Transformer().enable_datetimes_tz(timezone("Australia/Brisbane"))
+        actual = auto_parse("2022-05-14T11:00:00")
+        expected = datetime(2022, 5, 14, 1, 0, 0, tzinfo=utc)        
+        self.assertEqual(expected, actual)
