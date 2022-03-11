@@ -20,7 +20,8 @@ class TypeTwo():
         from_date   : datetime = datetime.min,
         to_date     : datetime = datetime(2999,12,31), 
         fn_can_retire : Callable[[dict], bool] = lambda _ : True,
-        ignore_fields = []
+        ignore_fields = [],
+        time_now: datetime = datetime.now()
     ):
         """
         Initializes an object which maintains state of a 
@@ -73,6 +74,7 @@ class TypeTwo():
         self.comparer = DictComparer(from_field, to_field, curr_field, *ignore_fields)
         self.visited_keys = set([])
         self.has_changes = False
+        self.time_now = time_now
 
         for row in existing_rows:
             row.setdefault(from_field, from_date)
@@ -88,7 +90,7 @@ class TypeTwo():
                     if i > 0:
                         row[curr_field] = False
 
-    def process_row(self, row, time_now = datetime.now()):
+    def process_row(self, row):
         """
         Args:
             row: dict   A now-current row from a system of record.
@@ -111,7 +113,7 @@ class TypeTwo():
             if self.comparer(row, existing):
                 return False
 
-            row.setdefault(self.from_field, time_now)
+            row.setdefault(self.from_field, self.time_now)
             existing[self.to_field] = row[self.from_field]
             existing[self.current_key] = False
         else:
@@ -149,7 +151,6 @@ class TypeTwo():
 
     def __iter__(self):
         """Iterates over the SCD-II processed rows"""        
-        time_now = datetime.now()
 
         for key, section in self.document.items():
             for i, row in enumerate(section):
@@ -157,7 +158,7 @@ class TypeTwo():
                     if row[self.current_key] and (key not in self.visited_keys):
                         if self.fn_can_retire(row):
                             row[self.current_key] = False
-                            row[self.to_field] = time_now
+                            row[self.to_field] = self.time_now
                             self.has_changes = True
                 else:
                     row[self.current_key] = False
