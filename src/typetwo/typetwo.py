@@ -83,7 +83,7 @@ class TypeTwo():
             row.setdefault(to_field, to_date)
             row.setdefault(curr_field, True)
   
-        self.document = row_key.group_rows(existing_rows)
+        self.document = self.row_key.group_rows(existing_rows)
         
         for rows in self.document.values():
             if len(rows) > 1:                
