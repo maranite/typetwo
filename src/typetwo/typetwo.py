@@ -55,13 +55,13 @@ class TypeTwo():
         and their successor records start. 
         """
         if isinstance(row_key, str):
-            row_key = RowKey(row_key)
+            self.row_key = RowKey(row_key)
         elif isinstance(row_key, list):
-            row_key = RowKey(*row_key)
+            self.row_key = RowKey(*row_key)
         elif row_key is None:
-            row_key = NoKey()
+            self.row_key = NoKey()
         elif isinstance(row_key, types.FunctionType):
-            row_key = FunKey(row_key)
+            self.row_key = FunKey(row_key)
         elif isinstance(row_key, RowKey):
             self.row_key = row_key
         else:
