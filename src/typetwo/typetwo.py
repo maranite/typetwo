@@ -20,7 +20,7 @@ class TypeTwo():
         to_date     : datetime = datetime(2999,12,31), 
         fn_can_retire : Callable[[dict], bool] = lambda _ : True,
         ignore_fields = [],
-        now         : datetime = datetime.now(utc)
+        now         : datetime = datetime.now
     ):
         """
         Initializes an object which maintains state of a 
